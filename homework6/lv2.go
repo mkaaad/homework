@@ -175,7 +175,7 @@ func SearchStudents(c *gin.Context) {
 	}
 }
 func ClientDB() {
-	dsn := "root:tb@586538741#@tcp(127.0.0.1:3306)/mydb?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:114514@tcp(127.0.0.1:3306)/mydb?charset=utf8mb4&parseTime=True&loc=Local"
 	var err error
 	db, err = sql.Open("mysql", dsn)
 	if err != nil {
