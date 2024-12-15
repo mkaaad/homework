@@ -192,7 +192,7 @@ func main() {
 	ClientDB()
 	isLogin = false
 	r.POST("/login", Login)
-	r.POST("register", Register)
+	r.POST("/register", Register)
 	r.POST("/add", AddStudents)
 	r.POST("/profile", ProfileStudents)
 	r.GET("/delete", DeleteStudent)
