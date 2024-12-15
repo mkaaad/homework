@@ -11,6 +11,7 @@ func main(){
 	database.ClientDB()
 	r.POST("/login",handlers.Login)
 	r.POST("/register",handlers.Register)
+	r.POST("/profile",handlers.ProfileUser)
 	r.GET("/getmessage",handlers.GetMessage)
 	r.POST("/postmessage",handlers.PostMessage)
 	r.GET("/deletemessage",handlers.DeleteMessage)

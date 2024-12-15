@@ -86,4 +86,28 @@ func Register(c *gin.Context) {
                 })
         }
 }
+func ProfileUser(c *gin.Context){
+	var u models.User
+	if !CheckLogin(c){
+		return
+	}
 
+	err:=c.ShouldBindJSON(&u)
+	if err!=nil{
+		c.JSON(400,gin.H{
+			"message":err,
+		})
+		return
+	}
+	_,err=database.Db.Exec("UPDATE user set nickname=?,password=?, where id=?",u.NickName,u.Password,u.Id)
+
+	if err!=nil{
+		c.JSON(500,gin.H{
+			"message":err,
+		})
+		return
+	}
+	c.JSON(200,gin.H{
+		"message":"Profile successfully",
+	})
+}
