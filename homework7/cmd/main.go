@@ -15,5 +15,6 @@ func main(){
 	r.GET("/getmessage",handlers.GetMessage)
 	r.POST("/postmessage",handlers.PostMessage)
 	r.GET("/deletemessage",handlers.DeleteMessage)
+	r.GET("/likemessage",handlers.LikeMessage)
 	r.Run(":8888")
 }

@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 var isLogin bool
+var LoginUser models.User
 func CheckLogin(c *gin.Context) bool {
         if !isLogin {
                 c.JSON(401, gin.H{
@@ -58,6 +59,7 @@ func Login(c *gin.Context) {
         } else {
                 isLogin = true
                 c.JSON(200,u)
+		LoginUser=u
         }
 }
 func Register(c *gin.Context) {
@@ -99,7 +101,7 @@ func ProfileUser(c *gin.Context){
 		})
 		return
 	}
-	_,err=database.Db.Exec("UPDATE user set nickname=?,password=?, where id=?",u.NickName,u.Password,u.Id)
+	_,err=database.Db.Exec("UPDATE user set nickname=?,password=?, where id=?",u.NickName,u.Password,LoginUser.Id)
 
 	if err!=nil{
 		c.JSON(500,gin.H{

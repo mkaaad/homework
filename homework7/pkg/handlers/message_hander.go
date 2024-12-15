@@ -47,7 +47,7 @@ func PostMessage(c *gin.Context){
                 return
         }
 	if m.ParentId!=-1{
-	_, err = database.Db.Exec("INSERT INTO messages (user_id,context,parent_id) value (?,?,?)",  m.UserId, m.Context,m.ParentId)
+	_, err = database.Db.Exec("INSERT INTO messages (user_id,context,parent_id) value (?,?,?)",  LoginUser.Id, m.Context,m.ParentId)
 	}else{
 	_,err=database.Db.Exec("INSERT INTO messages (user_id,context) value (?,?)",  m.UserId, m.Context)
 }
@@ -66,7 +66,7 @@ func DeleteMessage(c *gin.Context){
 		return
 	}
 	id := c.Query("id")
-	_, err := database.Db.Exec("UPDATE messages set is_deleted=1 where id=? Or parent_id=?",id,id)
+	_, err := database.Db.Exec("UPDATE messages set is_deleted=1 where (id=? Or parent_id=?) And user_id=?",id,id,LoginUser.Id)
 	if err != nil {
                 c.JSON(500, gin.H{
                         "message": err,
@@ -77,4 +77,43 @@ func DeleteMessage(c *gin.Context){
                 })
         }
 
+}
+func LikeMessage(c *gin.Context){
+	if !CheckLogin(c){
+		return
+	}
+	messageId := c.Query("id")
+	rows, err := database.Db.Query("SELECT * from like where user_id=? And message_id=?",  LoginUser.Id,messageId)
+	if err!=nil{
+		c.JSON(500,gin.H{
+			"message":err,
+		})
+		return
+	}
+	if rows.Next(){
+		_,err=database.Db.Exec("Delete from like where")
+		if err!=nil{
+			c.JSON(500,gin.H{
+				"message":err,
+			})
+			return
+		}else{
+			c.JSON(200,gin.H{
+				"message":"Cancel like successfully",
+		})
+			return
+		}
+	}
+
+
+	_,err=database.Db.Exec("INSERT INTO like (user_id,message_id) value (?,?)",LoginUser.Id,messageId)
+	if err!=nil{
+		c.JSON(500,gin.H{
+			"message":err,
+		})
+		return
+	}
+	c.JSON(200,gin.H{
+		"message":"Like successfully",
+	})
 }
