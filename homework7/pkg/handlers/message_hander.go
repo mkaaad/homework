@@ -47,9 +47,9 @@ func PostMessage(c *gin.Context){
                 return
         }
 	if m.ParentId!=-1{
-	_, err = database.Db.Exec("INSERT INTO messages (id,user_id,context,parent_id) value (,?,?,?)",  m.UserId, m.Context,m.ParentId)
+	_, err = database.Db.Exec("INSERT INTO messages (user_id,context,parent_id) value (?,?,?)",  m.UserId, m.Context,m.ParentId)
 	}else{
-	_,err=database.Db.Exec("INSERT INTO messages (id,user_id,context) value (,?,?)",  m.UserId, m.Context)
+	_,err=database.Db.Exec("INSERT INTO messages (user_id,context) value (?,?)",  m.UserId, m.Context)
 }
         if err != nil {
                 c.JSON(500, gin.H{

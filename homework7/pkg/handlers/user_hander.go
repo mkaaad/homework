@@ -75,7 +75,7 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
-        _, err = database.Db.Exec("INSERT INTO users (id,nickname,password,created_at,updated_at) value (,?,?,?,?)", u.NickName,u.Password, u.Created_at,u.Updated_at)
+        _, err = database.Db.Exec("INSERT INTO users (nickname,password,created_at,updated_at) value (?,?,?,?)", u.NickName,u.Password, u.Created_at,u.Updated_at)
         if err != nil {
                 c.JSON(400, gin.H{
                         "message": err,
